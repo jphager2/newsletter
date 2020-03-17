@@ -1,0 +1,13 @@
+{
+  "table": "table-layout:fixed;font-family:-apple-system,BlinkMacSystemFont,Helvetica,sans-serif;font-size:15px;line-height:1.55em;border-collapse:collapse;max-width:600px;height:100%!important;padding:0px",
+  "td": "",
+  ".title": "font-size:2em;color:#333",
+  ".subtitle": "font-size:1.2em;color:#777;font-style:italic",
+  ".quote": "color:#444;margin-top:0.8em;margin-bottom:0;font-style:italic",
+  ".header": "font-weight:600;font-size:1.3em;color:#333;background-color:#eee;padding:4px 8px;border:1px solid #ddd;",
+  ".link--title": "font-weight:600;font-size:1.1em;color:#000",
+  ".link--anchor": "text-decoration:none;color:#000;border-bottom-width:1px!important;border-bottom-color:#ddd!important;border-bottom-style:solid!important;font-size:1.1em;line-height:1.4em",
+  ".link--description": "font-size:1.1em;font-style:italic;color:#444;margin-top:0.8em;margin-bottom:0",
+  ".image": "width:100%",
+  ".text": "font-size:1.1em;color:#333"
+}

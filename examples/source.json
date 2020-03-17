@@ -1,0 +1,43 @@
+{
+  "from": "jphager2@gmail.com",
+  "to": "group@company.com",
+  "subject": "Newsleter",
+  "styles": "default",
+  "blocks": [
+    {
+      "type": "image",
+      "text": "Logo",
+      "data": {
+        "href": "https://upload.wikimedia.org/wikipedia/commons/d/df/logo.png"
+      }
+    },
+    {
+      "type": "title",
+      "text": "Newsletter",
+      "data": {
+        "subtitle": "Monthly newsletter, straight to your inbox"
+      }
+    },
+    {
+      "type": "header",
+      "text": "Introduction"
+    },
+    {
+      "type": "text",
+      "text": "Hello, this is a newsletter"
+    },
+    {
+      "type": "link",
+      "text": "Check it out!",
+      "data": {
+        "href": "https://example.com/page",
+        "description": "You will not believe it."
+      }
+    },
+    {
+      "type": "quote",
+      "text": "Believe it or not.\n--Ripley's"
+    }
+  ]
+}
+

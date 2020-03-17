@@ -4,7 +4,7 @@ Build and send HTML and Plaintext Newsletters
 
 ## Usage
 
-Create a `source.json` file in `newsletters/YYYY-MM-DD/` directory. See previous newsletters for examples.
+Create a `source.json` file in `newsletters/YYYY-MM-DD/` directory. See examples directory.
 
 Then build the email with `build`:
 
@@ -12,12 +12,12 @@ Then build the email with `build`:
 build newsletters/YYYY-MM-DD/source.json
 ```
 
-There should be a new file at `newsletters/YYYY-MM-DD/mail`
+There should be a new file at `newsletters/YYYY-MM-DD/mail.eml`
 
 To send the newsletter run:
 
 ```ruby
-send newsletters/YYYY-MM-DD/mail
+send newsletters/YYYY-MM-DD/mail.eml
 ```
 
 ### UI
