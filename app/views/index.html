@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Newsletter Builder</title>
+
+    <link rel="stylesheet" href="/css/app.css">
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body>
+    <div class="options">
+      <div class="button options__toggle-preview">HTML/Markdown</div>
+      <div class="divider"></div>
+      <div class="button options__new">New</div>
+      <div class="button options__open">Open</div>
+      <div class="divider"></div>
+      <div class="button options__add-block" data-type="title">Title Block</div>
+      <div class="button options__add-block" data-type="quote">Quote Block</div>
+      <div class="button options__add-block" data-type="header">Header Block</div>
+      <div class="button options__add-block" data-type="link">Link Block</div>
+      <div class="button options__add-block" data-type="image">Image Block</div>
+      <div class="button options__add-block" data-type="text">Text Block</div>
+    </div>
+    <div class="builder">
+      <div class="rendered">
+        <div class="html"></div>
+        <pre class="markdown hidden"></pre>
+      </div>
+      <div class="config">
+        <div class="configpath input input-inline">
+          <label class="input__label">Newsletter</label>
+          <input class="input__input"></input>
+          <div class="input__button button save-config">Save</div>
+        </div>
+        <div class="metadata input">
+          <label class="input__label">Metadata</label><br>
+          <textarea class="input__textarea" rows="10"></textarea>
+        </div>
+        <div class="blocks input">
+          <label class="input__label">Blocks</label><br>
+          <textarea class="input__textarea" rows="10"></textarea>
+        </div>
+        <div class="stylename input input-inline">
+          <label class="input__label">Style name</label>
+          <input class="input__input"></input>
+          <div class="input__button button save-styles">Save</div>
+        </div>
+        <div class="styles input">
+          <label class="input__label">Styles</label><br>
+          <textarea class="input__textarea" rows="10"></textarea>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

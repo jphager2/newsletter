@@ -1,0 +1,9 @@
+credentials.json
+token.yaml
+attachments/
+
+newsletters/
+styles/
+
+.ruby-version
+.ruby-gemset

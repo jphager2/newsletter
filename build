@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+require 'mail'
+require 'json'
+
+require_relative 'lib/newsletter'
+
+source = ARGV[0]
+dir = File.dirname(source)
+config = JSON.parse(File.read(source))
+styles = JSON.parse(File.read("styles/#{config.fetch('styles') { 'default' }}.json"))
+
+newsletter = Newsletter.render(config, styles)
+markdown = newsletter.to_markdown
+html = newsletter.to_html
+
+mail = Mail.new do
+  from config['from']
+  to config['to']
+  cc config['cc']
+  bcc config['bcc']
+  subject config['subject']
+end
+
+html_part = Mail::Part.new do
+  content_type  'text/html; charset=UTF-8'
+  body          html
+end
+
+text_part = Mail::Part.new do
+  content_type  'text/markdown; charset=UTF-8'
+  body          markdown
+end
+
+mail.part :content_type => "multipart/alternative" do |p|
+  p.html_part = html_part
+  p.text_part = text_part
+end
+
+config.fetch('attachments') { [] }.each do |attachment|
+  mail.attachments[attachment['name']] = File.read(File.join('attachments', attachment['path']))
+end
+
+mail.content_type = mail.content_type.gsub('alternative', 'mixed')
+mail.charset= 'UTF-8'
+mail.content_transfer_encoding = 'quoted-printable'
+
+File.write(File.join(dir, 'mail.eml'), mail.to_s)
+File.write(File.join(dir, 'mail.md'), markdown)
+File.write(File.join(dir, 'mail.html'), html)
