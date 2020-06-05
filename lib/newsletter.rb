@@ -309,7 +309,7 @@ module Newsletter
           </head>
           <body style="height: 100%">
             <div style="height: 100%;#{body_style}">
-              <table width="100%" align="center" style="#{table_style}">
+              <table width="100%" align="center" style="height: 100%;#{table_style};padding-bottom: 30px;">
                 <tr>
                   <td align="center">
                      #{html.gsub("\n", "\n            ").rstrip}
