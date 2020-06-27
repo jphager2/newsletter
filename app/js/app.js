@@ -6,7 +6,7 @@
     cc: "",
     bcc: "",
     subject: "",
-    styles: "default"
+    styles: ""
   });
 
   pp = (obj) => {
@@ -120,14 +120,16 @@
         const content = readerEvent.target.result;
         let metadata = validJSONObject(content) || {};
         const blocks = metadata['blocks'];
-        const styleName = metadata['styles'] || 'default';
+        const stylePath = metadata['styles'];
         let styles = {};
         let builder = {};
         delete metadata['blocks'];
 
-        if (styleName) {
-          styles = await getStyles(styleName);
-          builder['styles'] = styleName;
+        console.log(metadata)
+        console.log(stylePath)
+        if (stylePath) {
+          styles = await getStyles(stylePath);
+          builder['styles'] = stylePath;
         }
 
         setConfig('metadata', metadata);
@@ -140,15 +142,15 @@
     });
     input.click();
   }
-  async function getStyles(name) {
+  async function getStyles(path) {
     try {
-      const response = await fetch(`/styles?name=${name}`, {
+      const response = await fetch(`/styles?path=${path}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
       return await response.json();
     } catch(err) {
-      console.error(`failed to get style "${name}": ${err}`);
+      console.error(`failed to get style "${path}": ${err}`);
       return {};
     }
   }
@@ -236,10 +238,10 @@
 
     let styles = getConfig('styles', '{}');
 
-    const styleName = metadata['styles'] || 'default';
+    const stylePath = metadata['styles'];
 
-    if (Object.entries(styles).length === 0 && styleName) {
-      styles = await getStyles(styleName);
+    if (Object.entries(styles).length === 0 && stylePath) {
+      styles = await getStyles(stylePath);
       setConfig('styles', styles);
     }
 
@@ -247,7 +249,7 @@
     const blocksEl = document.querySelector('.config .blocks textarea');
     const stylesEl = document.querySelector('.config .styles textarea');
     const configPathEl = document.querySelector('.config .configpath input');
-    const styleNameEl = document.querySelector('.config .stylename input');
+    const stylePathEl = document.querySelector('.config .stylepath input');
 
     const previewToggleEl = document.querySelector('.options .options__toggle-preview');
     const newEl = document.querySelector('.options .options__new');
@@ -261,20 +263,20 @@
     blocksEl.innerHTML = pp(blocks);
     stylesEl.innerHTML = pp(styles);
     configPathEl.value = builder['path'] || "";
-    styleNameEl.value = builder['styles'] || styleName;
+    stylePathEl.value = builder['styles'] || stylePath;
 
     updateMetadata = updateConfig('metadata', metadataEl, defaultMetadata);
     updateBlocks = updateConfig('blocks', blocksEl, '[]');
     updateStyles = updateConfig('styles', stylesEl, '{}');
     updateConfigPath = updateBuilderConfig('path', configPathEl);
-    updateStyleName = updateBuilderConfig('styles', styleNameEl);
+    updateStylePath = updateBuilderConfig('styles', stylePathEl);
 
     changeEvents.forEach(event => {
       metadataEl.addEventListener(event, updateMetadata);
       blocksEl.addEventListener(event, updateBlocks);
       stylesEl.addEventListener(event, updateStyles);
       configPathEl.addEventListener(event, updateConfigPath);
-      styleNameEl.addEventListener(event, updateStyleName);
+      stylePathEl.addEventListener(event, updateStylePath);
     });
 
     previewToggleEl.addEventListener('click', togglePreview);

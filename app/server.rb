@@ -15,7 +15,6 @@ module Server
   end
 
   class Styles
-    STYLES_DIR = Pathname.new(File.expand_path('../styles', __dir__)).freeze
     INVALID_RES = [400, { 'Content-Type' => 'application/json' }, ['{}']].freeze
 
     def call(env)
@@ -27,10 +26,8 @@ module Server
                  req.params
                end
 
-      name = params.fetch('name')
-      path = File.join(STYLES_DIR, "#{name}.json")
-
-      return INVALID_RES unless name.match?(/\A[a-z]+\Z/)
+      path = params.fetch('path')
+      path = File.join(Dir.home, path)
 
       if req.post?
         styles = params.fetch('styles')
@@ -48,8 +45,6 @@ module Server
   end
 
   class SaveConfig
-    NEWSLETTER_DIR = Pathname.new(File.expand_path('../newsletters', __dir__)).freeze
-
     def call(env)
       req = Rack::Request.new(env)
 
@@ -57,11 +52,7 @@ module Server
       path = params.fetch('path')
       config = params.fetch('config')
 
-      path = NEWSLETTER_DIR.join(path).to_s
-
-      unless path.start_with?(NEWSLETTER_DIR.to_s)
-        return [400, { 'Content-Type' => 'application/json' }, ['{}']]
-      end
+      path = File.join(Dir.home, path)
 
       FileUtils.mkdir_p(path)
       File.write(File.join(path, 'source.json'), JSON.pretty_generate(config))
