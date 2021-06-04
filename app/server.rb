@@ -4,6 +4,14 @@ require 'pathname'
 require_relative '../lib/newsletter'
 
 module Server
+  def self.root=(path)
+    @root = Pathname.new(path)
+  end
+
+  def self.root
+    @root ||= Pathname.new(Dir.pwd)
+  end
+
   class Index
     HTML = File.read(File.expand_path('views/index.html', __dir__))
 
@@ -15,8 +23,6 @@ module Server
   end
 
   class Styles
-    INVALID_RES = [400, { 'Content-Type' => 'application/json' }, ['{}']].freeze
-
     def call(env)
       req = Rack::Request.new(env)
 
@@ -27,7 +33,15 @@ module Server
                end
 
       path = params.fetch('path')
-      path = File.join(Dir.home, path)
+      path = Server.root.join(path).expand_path
+
+      unless path.to_s.start_with?(Server.root.to_s) && path.exist?
+        return [
+          400,
+          { 'Content-Type' => 'application/json' },
+          ["{\"error\": Path not found: #{path}}"]
+        ]
+      end
 
       if req.post?
         styles = params.fetch('styles')
@@ -40,7 +54,7 @@ module Server
       end
     rescue KeyError, JSON::ParserError => e
       pp e
-      INVALID_RES
+      [400, { 'Content-Type' => 'application/json' }, ['{}']]
     end
   end
 
@@ -49,10 +63,18 @@ module Server
       req = Rack::Request.new(env)
 
       params = JSON.parse(req.body.read)
-      path = params.fetch('path')
       config = params.fetch('config')
 
-      path = File.join(Dir.home, path)
+      path = params.fetch('path')
+      path = Server.root.join(path).expand_path
+
+      unless path.to_s.start_with?(Server.root.to_s)
+        return [
+          400,
+          { 'Content-Type' => 'application/json' },
+          ["{\"error\": Path not found: #{path}}"]
+        ]
+      end
 
       FileUtils.mkdir_p(path)
       File.write(File.join(path, 'source.json'), JSON.pretty_generate(config))

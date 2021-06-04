@@ -2,6 +2,8 @@ require 'rack'
 
 require_relative 'server'
 
+Server.root = ENV['SERVER_ROOT'] if ENV.key?('SERVER_ROOT')
+
 use Rack::Static, urls: %w[/css /js]
 
 map '/' do
